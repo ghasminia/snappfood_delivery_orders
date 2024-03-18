@@ -6,7 +6,7 @@ import Utils from "../services/Utils";
 export default class DeliveryReportRepository {
     async create(deliveryReport: Omit<IDeliveryReport, "id">): Promise<DeliveryReport> {
         const _deliveryReport = await DeliveryReport.create(deliveryReport, { raw: true });
-        return _deliveryReport?.dataValues;
+        return _deliveryReport;
     }
 
     async findNotCheckedReports(orderId: number): Promise<DeliveryReport | null> {
@@ -18,7 +18,7 @@ export default class DeliveryReportRepository {
             },
             raw: true
         });
-        return deliveryReports?.dataValues;
+        return deliveryReports;
     }
 
     async findAssignToMe(agentId: number): Promise<DeliveryReport | null> {
@@ -44,12 +44,12 @@ export default class DeliveryReportRepository {
         });
 
         if (deliveryReports) {
-            deliveryReports?.update(
+            DeliveryReport.update(
                 {
                     agentId: agentId,
                     status: DeliveryReportStatus.FOLLOW_UP
                 },
-                { raw: true }
+                { where: { id: deliveryReports.id } }
             );
         }
 
