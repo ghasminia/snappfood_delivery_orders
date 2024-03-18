@@ -1,40 +1,40 @@
 # Delivery report Service
 
-This service allows us to report late orders with the ability to file late requests for delayed orders to be reviewed by someone.
+This service facilitates the reporting of late orders, allowing delayed requests to be filed for review by designated personnel. The project is developed using TypeScript with the Express framework, utilizes a PostgreSQL database managed through Sequelize ORM, and is containerized with Docker. Additionally, it includes integration tests to ensure reliability.
 
 ### This service has three routes that include
 
 #### 1. Record Delay Request
-- **Description**: This route allows users to record delays and add them to the review queue for further processing.
+- **Description**: Records delays and adds them to the review queue for further processing.
 - **Endpoint**: `/orders/:orderId/delay`
 - **HTTP Method**: POST
 
 #### 2. Support Request Pickup
-- **Description**: This route enables support agents to pick up requests from the review queue for resolution.
-- **Endpoint**: `/orders/:orderId/assign-employee`
+- **Description**: Enables support agents to pick up requests from the review queue for resolution.
+- **Endpoint**: `delivery-reports/assign-employee`
 - **HTTP Method**: POST
 
 #### 3. Weekly Delay Report
-- **Description**: This route generates a weekly report of delays for all stores.
+- **Description**: Generates a weekly report of delays for all vendors.
 - **Endpoint**: `/vendors/reports/weekly`
 - **HTTP Method**: GET
 
 ## Installation
-- Clone the project somewhere
+- Clone the project repository
 
-- Build your env file according to the requirements stated in the env.example file
+- Configure your environment variables based on the specifications outlined in the env.example file.
 
-- Install the required packages for the project:
+- Install the necessary project dependencies:
 ```bash
 npm install
 ```
 
-- Create a suitable production output from the project:
+- Build the project for production:
 ```bash
 npm run build
 ```
 
-- Create the config.json file to create databases using sequelize-cli at the config/config.json address:
+- Create a config.json file at config/config.json to manage database configurations using Sequelize CLI:
 ```json
 {
     "development": {
@@ -60,20 +60,20 @@ npm run build
     }
 }
 ```
-- Make sure Docker is installed and then run the following command
+- Ensure Docker is installed and run the following command:
 ```bash
 docker compose up -d
 ```
-- Run this command to create databases inside the project container:
+- Create databases within the project container:
 ```bash
 npx sequelize-cli db:migrate 
 ```
-- To create initial data for testing (optional):
+- Optionally, seed initial data for testing:
 ```bash
 npx sequelize-cli db:seed:all
 ```
 
-- Running project tests (optional):
+- Optionally, run project tests:
 ```bash
 npm run test
 ```
