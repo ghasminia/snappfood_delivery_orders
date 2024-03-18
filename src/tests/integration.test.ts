@@ -30,7 +30,7 @@ describe('Integration tests for routes', () => {
 
   test('Assign delay report to employee', async () => {
     const res = await request(app)
-      .post(`/api/orders/2/assign-employee`)
+      .post(`/api/delivery-reports/assign-employee`)
       .send({
         agentId: 1
       });

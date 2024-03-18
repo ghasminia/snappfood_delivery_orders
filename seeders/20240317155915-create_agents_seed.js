@@ -6,16 +6,19 @@ module.exports = {
     await queryInterface.bulkInsert('agents', [
       {
         name: 'Agent 1',
+        vendorId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Agent 2',
+        vendorId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Agent 3',
+        vendorId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }
