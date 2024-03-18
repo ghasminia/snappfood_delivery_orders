@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  express:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT}:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/usr/src/app/
+    networks:
+      - delivery_reports
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - delivery_reports
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - delivery_reports
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  
+networks:
+  delivery_reports:
+    name: 'delivery_reports'
