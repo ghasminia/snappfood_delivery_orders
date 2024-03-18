@@ -14,20 +14,23 @@ export default class ApiController {
         const { order } = request.body;
 
         const checkTripStatus = await tripRepository.getEstimatedDeliveryTime(order.id);
-        let nextDeliveryTime;
+        let nextDeliveryTime, tripRecord;        
         if (checkTripStatus) {
-            const estimatedDeliveryTime = await Utils.getInstance().getEstimatedDeliveryTime(order.id);
+            const estimatedDeliveryTime = await Utils.getInstance().getEstimatedDeliveryTime(order.id);            
             if (estimatedDeliveryTime.status) {
-                nextDeliveryTime = estimatedDeliveryTime.data?.etc;
+                nextDeliveryTime = estimatedDeliveryTime.data?.eta;
             }
+            tripRecord = true
         }
 
         const newDeliveryReport: IDeliveryReport = {
             orderId: order.id,
             vendorId: order.vendorId,
             status: DeliveryReportStatus.DELAY,
-            tripRecord: true
         };
+        if (tripRecord) {
+            newDeliveryReport.tripRecord = true;
+        }
 
         const deliveryReports = await deliveryReportRepository.create(newDeliveryReport).catch((error) => {
             return next(new CustomError(400, { code: 400, message: error.message }));
@@ -50,9 +53,9 @@ export default class ApiController {
 
 
     async assignOrderToEmployeeForReview(request: Request, response: Response, next: NextFunction): Promise<void> {
-        const { order, agentId } = request.body;
+        const { agent } = request.body;
 
-        const deliveryReportAsFifo = await deliveryReportRepository.findDeliveryReportAsFifoAndAssignToMe(order.id, agentId);
+        const deliveryReportAsFifo = await deliveryReportRepository.findDeliveryReportAsFifoAndAssignToMe(agent.id, agent.vendorId);
         if (!deliveryReportAsFifo) {
             return next(new CustomError(400, { code: 400, message: "There are no reports to assign you" }));
         }
@@ -60,8 +63,7 @@ export default class ApiController {
         response.locals = {
             statusCode: 200,
             data: {
-                deliveryReportId: deliveryReportAsFifo.id,
-                vendorId: order.vendorId
+                deliveryReportId: deliveryReportAsFifo.id
             }
         };
 

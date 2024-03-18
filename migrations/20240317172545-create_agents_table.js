@@ -14,6 +14,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      vendorId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'vendors',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import OrderRepository from "../../repositories/OrderRepository";
+import AgentRepository from "../../repositories/AgentRepository";
 import { CustomError } from "../../services/CustomError";
 
-const orderRepository = new OrderRepository();
+const agentRepository = new AgentRepository();
 const middleware = async (request: Request, response: Response, next: NextFunction) => {
-    const agentId = request.params.agentId || request.body.agentId;
+    const agentId = request.params.agentId || request.body.agentId;    
 
     if (!agentId) {
         return next(
@@ -12,12 +12,12 @@ const middleware = async (request: Request, response: Response, next: NextFuncti
         );
     }
 
-    const agent = await orderRepository.findById(parseInt(agentId));
+    const agent = await agentRepository.findById(parseInt(agentId));
     if (!agent) {
         return next(
             new CustomError(404, { code: 404, message: "agent not found" })
         );
-    }
+    }    
 
     request.body.agent = agent;
     return next();

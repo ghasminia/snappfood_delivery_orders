@@ -32,10 +32,10 @@ export default class DeliveryReportRepository {
         return deliveryReports;
     }
 
-    async findDeliveryReportAsFifoAndAssignToMe(orderId: number, agentId: number): Promise<DeliveryReport | null> {
+    async findDeliveryReportAsFifoAndAssignToMe(agentId: number, vendorId: number): Promise<DeliveryReport | null> {
         const deliveryReports = await DeliveryReport.findOne({
             where: {
-                orderId: { [Op.eq]: orderId },
+                vendorId: { [Op.eq]: vendorId },
                 agentId: { [Op.eq]: null },
                 status: { [Op.eq]: DeliveryReportStatus.DELAY }
             },

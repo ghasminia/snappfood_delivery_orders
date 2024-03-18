@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../database';
+import Vendor from './Vendor';
 
 export interface IAgent {
     name?: string;
@@ -26,5 +27,7 @@ Agent.init({
     tableName: 'agents',
     timestamps: true
 });
+
+Agent.belongsTo(Vendor, { foreignKey: 'vendorId' });
 
 export default Agent;

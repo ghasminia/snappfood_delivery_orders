@@ -4,6 +4,7 @@ import deliveryReportTimeMiddleware from '../middlewares/deliveryReportTimeMiddl
 import deliveryReportNotCheckMiddleware from '../middlewares/deliveryReportNotCheckMiddleware';
 import deliveryReportNotAssignMeMiddleware from '../middlewares/deliveryReportNotAssignMeMiddleware';
 import orderMiddleware from '../middlewares/models/orderMiddleware';
+import agentMiddleware from '../middlewares/models/agentMiddleware';
 
 const router = express.Router()
 const apiController = new ApiController()
@@ -15,8 +16,8 @@ router
         deliveryReportNotCheckMiddleware,
         apiController.createDelayForOrder
     )
-    .post("/orders/:orderId/assign-employee",
-        orderMiddleware,
+    .post("/delivery-reports/assign-employee",
+        agentMiddleware,
         deliveryReportNotAssignMeMiddleware,
         apiController.assignOrderToEmployeeForReview
     )
